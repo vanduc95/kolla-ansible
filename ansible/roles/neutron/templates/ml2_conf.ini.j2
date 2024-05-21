@@ -17,7 +17,7 @@ extension_drivers = {{ neutron_extension_drivers | map(attribute='name') | join(
 {% if enable_ironic | bool %}
 network_vlan_ranges = physnet1
 {% else %}
-network_vlan_ranges =
+network_vlan_ranges = {% for bridge in neutron_bridge_name.split(',') %}physnet{{ loop.index0 + 1 }}:{{vlan_ranges}}{% if not loop.last %},{% endif %}{% endfor %}
 {% endif %}
 
 [ml2_type_flat]
